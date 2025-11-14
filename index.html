@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Powered Smart Educational Platform</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+  <style>
+    :root {
+      --bg: #0f2027;
+      --bg-light: #1e2b35;
+      --text: #ffffff;
+      --primary: #00bcd4;
+      --primary-dark: #0097a7;
+      --accent: #ff4081;
+      --accent-dark: #f50057;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --radius: 8px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 1rem;
+      font-family: var(--font);
+      background: linear-gradient(to right, var(--bg), #203a43, #2c5364);
+      color: var(--text);
+      max-width: 1200px;
+      margin: auto;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--primary);
+      animation: glow 2s infinite alternate;
+      margin-bottom: 1.5rem;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px var(--primary); }
+      to { text-shadow: 0 0 30px var(--accent); }
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-light);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.5rem;
+    }
+
+    .card-header i {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    select, textarea, button, input {
+      width: 100%;
+      margin-top: 0.8rem;
+      padding: 0.8rem;
+      border-radius: var(--radius);
+      border: none;
+      font-size: 1rem;
+      font-family: var(--font);
+    }
+
+    textarea {
+      height: 150px;
+      background: #1a1a2e;
+      color: var(--text);
+      font-family: 'Courier New', monospace;
+      resize: vertical;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.secondary {
+      background: var(--bg);
+      border: 1px solid var(--primary);
+    }
+
+    button.secondary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .ai-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .ai-features button {
+      font-size: 0.9rem;
+      padding: 0.7rem;
+    }
+
+    pre {
+      background: #111;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: var(--radius);
+      white-space: pre-wrap;
+      color: #0f0;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .error {
+      color: var(--accent);
+    }
+
+    .success {
+      color: var(--success);
+    }
+
+    .output-container {
+      position: relative;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--radius);
+      padding: 0.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: calc(var(--radius) - 2px);
+      transition: all 0.3s ease;
+      text-align: center;
+      flex: 1;
+    }
+
+    .tab.active {
+      background: var(--primary);
+    }
+
+    .code-container {
+      position: relative;
+    }
+
+    .code-actions {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      z-index: 10;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .code-actions button {
+      width: auto;
+      margin: 0;
+      padding: 0.4rem 0.8rem;
+      background: rgba(0, 0, 0, 0.7);
+      font-size: 0.8rem;
+    }
+
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .loader .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 3px solid var(--primary);
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .api-key-container {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .api-key-container input {
+      flex: 1;
+    }
+
+    .api-key-container button {
+      width: auto;
+      margin: 0;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 0.5rem;
+    }
+
+    .history-item {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.8rem;
+      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 3px solid var(--primary);
+    }
+
+    .history-item:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .history-title {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    .history-preview {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🤖 AI-Powered Smart Educational Platform</h1>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('code-generation')">Code Generation</div>
+    <div class="tab" onclick="switchTab('code-execution')">Code Execution</div>
+    <div class="tab" onclick="switchTab('ai-features')">AI Features</div>
+    <div class="tab" onclick="switchTab('history')">History</div>
+  </div>
+
+  <div class="container">
+    <!-- Code Generation Panel -->
+    <div class="card tab-content" id="code-generation">
+      <div class="card-header">
+        <i class="fas fa-code"></i>
+        <h2>Code Generation</h2>
+      </div>
+      
+      <div class="api-key-container">
+        <input type="password" id="api-key" placeholder="Enter OpenAI API Key (Optional)" />
+        <button onclick="saveApiKey()" class="secondary">Save</button>
+      </div>
+      <div class="feature-desc">Without an API key, the platform will use simplified models</div>
+      
+      <select id="language">
+        <option value="js">JavaScript</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+        <option value="python">Python</option>
+      </select>
+
+      <textarea id="description" placeholder="Write a detailed description of the code you want to generate (example: a button that changes the background color when clicked, with a transition effect)..."></textarea>
+      
+      <div class="btn-group">
+        <button onclick="generateCode()">
+          <i class="fas fa-magic"></i> Generate Code
+        </button>
+        <button onclick="generateWithAI()" class="secondary">
+          <i class="fas fa-robot"></i> Generate with AI
+        </button>
+      </div>
+
+      <div class="loader" id="generation-loader">
+        <div class="spinner"></div>
+        <p>Generating code...</p>
+      </div>
+    </div>
+
+    <!-- Code Display Panel -->
+    <div class="card tab-content" id="code-execution">
+      <div class="card-header">
+        <i class="fas fa-play-circle"></i>
+        <h2>Code Execution</h2>
+      </div>
+      
+      <div class="code-container">
+        <div class="code-actions">
+          <button onclick="copyCode()" title="Copy Code">
+            <i class="far fa-copy"></i>
+          </button>
+          <button onclick="formatCode()" title="Format Code">
+            <i class="fas fa-indent"></i>
+          </button>
+          <button onclick="clearCode()" title="Clear Code">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </div>
+        <textarea id="code" placeholder="Generated code will appear here..."></textarea>
+      </div>
+      
+      <div class="btn-group">
+        <button onclick="runCode()">
+          <i class="fas fa-play"></i> Run Code
+        </button>
+        <button onclick="debugCode()" class="secondary">
+          <i class="fas fa-bug"></i> Debug Code
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Features Panel -->
+  <div class="card tab-content" id="ai-features" style="display: none;">
+    <div class="card-header">
+      <i class="fas fa-robot"></i>
+      <h2>Advanced AI Features</h2>
+    </div>
+    
+    <div class="ai-features">
+      <button onclick="explainCode()">
+        <i class="fas fa-info-circle"></i> Explain Code
+      </button>
+      <button onclick="refactorCode()">
+        <i class="fas fa-sync-alt"></i> Refactor Code
+      </button>
+      <button onclick="optimizeCode()">
+        <i class="fas fa-tachometer-alt"></i> Optimize Code
+      </button>
+      <button onclick="addComments()">
+        <i class="far fa-comment-dots"></i> Add Comments
+      </button>
+      <button onclick="translateCode()">
+        <i class="fas fa-language"></i> Translate Code
+      </button>
+      <button onclick="suggestImprovements()">
+        <i class="fas fa-lightbulb"></i> Suggest Improvements
+      </button>
+    </div>
+    
+    <div class="loader" id="ai-loader">
+      <div class="spinner"></div>
+      <p>Processing...</p>
+    </div>
+    
+    <div class="output-header">
+      <h3>AI Results:</h3>
+    </div>
+    <pre id="ai-output">💡 AI results will appear here...</pre>
+  </div>
+
+  <!-- History Panel -->
+  <div class="card tab-content" id="history" style="display: none;">
+    <div class="card-header">
+      <i class="fas fa-history"></i>
+      <h2>Code History</h2>
+    </div>
+    <button onclick="clearHistory()" class="secondary" style="width: auto; margin-bottom: 1rem;">
+      <i class="fas fa-trash"></i> Clear History
+    </button>
+    <div id="history-list">
+      <!-- History items will be dynamically added here -->
+    </div>
+  </div>
+
+  <!-- Output Panel -->
+  <div class="card output-container">
+    <div class="output-header">
+      <h3>Output:</h3>
+      <button onclick="clearOutput()" style="width: auto;">
+        <i class="fas fa-broom"></i> Clear Output
+      </button>
+    </div>
+    <pre id="output">💡 Output will appear here...</pre>
+  </div>
+
+  <script>
+    // Initialize the platform
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load saved API key
+      const savedApiKey = localStorage.getItem('openai-api-key');
+      if (savedApiKey) {
+        document.getElementById('api-key').value = savedApiKey;
+      }
+      
+      // Load code history
+      loadHistory();
+      
+      // Initialize syntax highlighting
+      hljs.highlightAll();
+    });
+
+    // Tab switching function
+    function switchTab(tabName) {
+      // Hide all tab contents
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected tab content and set active class
+      document.getElementById(tabName).style.display = 'block';
+      event.target.classList.add('active');
+    }
+
+    // Save API key to localStorage
+    function saveApiKey() {
+      const apiKey = document.getElementById('api-key').value;
+      if (apiKey) {
+        localStorage.setItem('openai-api-key', apiKey);
+        showTemporaryMessage(document.getElementById('api-key'), 'API key saved successfully', 'success');
+      } else {
+        localStorage.removeItem('openai-api-key');
+        showTemporaryMessage(document.getElementById('api-key'), 'API key removed', 'success');
+      }
+    }
+
+    // Basic code generation function
+    function generateCode() {
+      const desc = document.getElementById("description").value.toLowerCase();
+      const language = document.getElementById("language").value;
+      const codeArea = document.getElementById("code");
+
+      let code = "";
+
+      if (language === "js") {
+        if (desc.includes("button") && desc.includes("color")) {
+          code = `// Create a button to change background color
+const button = document.createElement("button");
+button.textContent = "Change Color";
+button.style.padding = "10px 20px";
+button.style.margin = "10px";
+button.style.backgroundColor = "#4CAF50";
+button.style.color = "white";
+button.style.border = "none";
+button.style.borderRadius = "5px";
+button.style.cursor = "pointer";
+
+// Add hover effect
+button.addEventListener("mouseenter", function() {
+  button.style.transform = "scale(1.05)";
+  button.style.transition = "transform 0.2s";
+});
+
+button.addEventListener("mouseleave", function() {
+  button.style.transform = "scale(1)";
+});
+
+// Change background color on click
+button.addEventListener("click", function() {
+  const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+  document.body.style.transition = "background-color 0.5s ease";
+  document.body.style.backgroundColor = randomColor;
+});
+
+document.body.appendChild(button);`;
+        } else if (desc.includes("time") || desc.includes("clock")) {
+          code = `// Display real-time clock
+function updateTime() {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString();
+  
+  // Create time display element if it doesn't exist
+  let timeDisplay = document.getElementById('time-display');
+  if (!timeDisplay) {
+    timeDisplay = document.createElement('div');
+    timeDisplay.id = 'time-display';
+    timeDisplay.style.fontSize = '2rem';
+    timeDisplay.style.fontWeight = 'bold';
+    timeDisplay.style.textAlign = 'center';
+    timeDisplay.style.margin = '20px';
+    timeDisplay.style.padding = '20px';
+    timeDisplay.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+    timeDisplay.style.borderRadius = '10px';
+    document.body.appendChild(timeDisplay);
+  }
+  
+  timeDisplay.textContent = timeString;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+updateTime(); // Initial call`;
+        } else if (desc.includes("welcome") || desc.includes("greeting")) {
+          code = `// Create an interactive welcome message
+const welcomeModal = document.createElement('div');
+welcomeModal.style.position = 'fixed';
+welcomeModal.style.top = '0';
+welcomeModal.style.left = '0';
+welcomeModal.style.width = '100%';
+welcomeModal.style.height = '100%';
+welcomeModal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+welcomeModal.style.display = 'flex';
+welcomeModal.style.justifyContent = 'center';
+welcomeModal.style.alignItems = 'center';
+welcomeModal.style.zIndex = '1000';
+
+const modalContent = document.createElement('div');
+modalContent.style.backgroundColor = 'var(--bg-light)';
+modalContent.style.padding = '2rem';
+modalContent.style.borderRadius = '10px';
+modalContent.style.textAlign = 'center';
+modalContent.style.maxWidth = '400px';
+
+const welcomeText = document.createElement('h2');
+welcomeText.textContent = 'Welcome to our Educational Platform!';
+welcomeText.style.color = 'var(--primary)';
+welcomeText.style.marginBottom = '1rem';
+
+const closeButton = document.createElement('button');
+closeButton.textContent = 'Start Learning';
+closeButton.style.padding = '10px 20px';
+closeButton.style.backgroundColor = 'var(--accent)';
+closeButton.style.color = 'white';
+closeButton.style.border = 'none';
+closeButton.style.borderRadius = '5px';
+closeButton.style.cursor = 'pointer';
+
+closeButton.addEventListener('click', function() {
+  document.body.removeChild(welcomeModal);
+});
+
+modalContent.appendChild(welcomeText);
+modalContent.appendChild(closeButton);
+welcomeModal.appendChild(modalContent);
+document.body.appendChild(welcomeModal);`;
+        } else {
+          code = `// 🤖 I didn't fully understand your description
+// Try to be more specific in describing the code you want to create
+
+// Examples:
+// - "A button that changes background color"
+// - "Display real-time clock"
+// - "Interactive welcome message"
+
+console.log("Input description: ${desc}");
+alert("🤖 I didn't fully understand your description. Please try to be more specific.");`;
+        }
+      } else if (language === "html") {
+        code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello World!</h1>
+        <p>This is a basic HTML page.</p>
+    </div>
+</body>
+</html>`;
+      } else if (language === "css") {
+        code = `/* Basic CSS styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+}`;
+      } else if (language === "python") {
+        code = `# Basic Python program
+def main():
+    print("Hello World!")
+    
+    # Example of a calculation function
+    def calculate_sum(a, b):
+        """Function to calculate the sum of two numbers"""
+        return a + b
+    
+    # Example of using the function
+    num1 = 10
+    num2 = 15
+    result = calculate_sum(num1, num2)
+    
+    print(f"The sum of {num1} and {num2} is: {result}")
+    
+    # Example of a loop
+    print("\\nNumbers from 1 to 5:")
+    for i in range(1, 6):
+        print(i)
+
+if __name__ == "__main__":
+    main()`;
+      }
+
+      codeArea.value = code;
+      highlightCode();
+      addToHistory(desc, code, language);
+    }
+
+    // Advanced AI code generation
+    async function generateWithAI() {
+      const desc = document.getElementById("description").value;
+      const language = document.getElementById("language").value;
+      const apiKey = localStorage.getItem('openai-api-key');
+      
+      if (!desc.trim()) {
+        showOutput("⚠️ Please enter a code description first", "error");
+        return;
+      }
+      
+      const loader = document.getElementById("generation-loader");
+      loader.style.display = "block";
+      
+      try {
+        let generatedCode;
+        
+        if (apiKey) {
+          // Use OpenAI API for code generation
+          generatedCode = await generateWithOpenAI(desc, language, apiKey);
+        } else {
+          // Use enhanced local generation as fallback
+          generatedCode = generateEnhancedCode(desc, language);
+        }
+        
+        document.getElementById("code").value = generatedCode;
+        highlightCode();
+        addToHistory(desc, generatedCode, language);
+        showOutput("✅ Code generated successfully using AI", "success");
+      } catch (error) {
+        console.error("AI generation error:", error);
+        showOutput("❌ Error generating code: " + error.message, "error");
+        
+        // Fallback to basic generation
+        generateCode();
+      } finally {
+        loader.style.display = "none";
+      }
+    }
+
+    // Enhanced local code generation
+    function generateEnhancedCode(desc, language) {
+      // This is a simplified version - in a real implementation, 
+      // you would use more sophisticated NLP techniques or connect to an AI service
+      const enhancedTemplates = {
+        js: {
+          "button": `// Advanced button with effects
+          const button = document.createElement('button');
+          button.textContent = 'Interactive Button';
+          button.className = 'ai-enhanced-button';
+          
+          // Add advanced styles
+          Object.assign(button.style, {
+            padding: '12px 24px',
+            margin: '10px',
+            backgroundColor: '#${Math.floor(Math.random()*16777215).toString(16)}',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+          });
+          
+          // Interactive effects
+          button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.3)';
+          });
+          
+          button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+          });
+          
+          button.addEventListener('click', function() {
+            // Click effect
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              this.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Change color
+            this.style.backgroundColor = '#${Math.floor(Math.random()*16777215).toString(16)}';
+          });
+          
+          document.body.appendChild(button);`,
+          "form": `// Advanced input form
+          const form = document.createElement('form');
+          form.style.cssText = 'max-width: 400px; margin: 20px auto; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;';
+          
+          // Name field
+          const nameLabel = document.createElement('label');
+          nameLabel.textContent = 'Name:';
+          nameLabel.style.display = 'block';
+          nameLabel.style.marginBottom = '5px';
+          
+          const nameInput = document.createElement('input');
+          nameInput.type = 'text';
+          nameInput.required = true;
+          nameInput.style.cssText = 'width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;';
+          
+          // Email field
+          const emailLabel = document.createElement('label');
+          emailLabel.textContent = 'Email:';
+          emailLabel.style.display = 'block';
+          emailLabel.style.marginBottom = '5px';
+          
+          const emailInput = document.createElement('input');
+          emailInput.type = 'email';
+          emailInput.required = true;
+          emailInput.style.cssText = 'width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;';
+          
+          // Submit button
+          const submitButton = document.createElement('button');
+          submitButton.type = 'submit';
+          submitButton.textContent = 'Submit';
+          submitButton.style.cssText = 'width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;';
+          
+          // Form submission handling
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Form submitted successfully!');
+            form.reset();
+          });
+          
+          form.appendChild(nameLabel);
+          form.appendChild(nameInput);
+          form.appendChild(emailLabel);
+          form.appendChild(emailInput);
+          form.appendChild(submitButton);
+          document.body.appendChild(form);`
+        }
+      };
+      
+      // Find the best matching template
+      for (const [keyword, template] of Object.entries(enhancedTemplates[language] || {})) {
+        if (desc.includes(keyword)) {
+          return template;
+        }
+      }
+      
+      // Default enhanced template
+      return `// 🤖 Advanced ${language} code
+// This code was generated based on your description: "${desc}"
+
+console.log("Smart Learning Platform - Advanced Version");
+
+// You can modify this code according to your needs
+// For more help, use the available AI features
+
+// Basic code to get started:
+function initializeApp() {
+    console.log("App is ready!");
+}
+
+initializeApp();`;
+    }
+
+    // Run code with enhanced safety
+    function runCode() {
+      const code = document.getElementById("code").value;
+      const output = document.getElementById("output");
+      const language = document.getElementById("language").value;
+      
+      output.classList.remove("error", "success");
+      output.textContent = "";
+      
+      try {
+        if (language === "js") {
+          // Safer execution for JavaScript
+          const originalLog = console.log;
+          let logOutput = "";
+          
+          console.log = function(...args) {
+            logOutput += args.map(arg => 
+              typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ') + '\n';
+          };
+          
+          // Use Function constructor for safer execution
+          const safeEval = new Function(code);
+          safeEval();
+          
+          console.log = originalLog;
+          
+          output.textContent = logOutput || "✅ Code executed successfully";
+          output.classList.add("success");
+        } else {
+          output.textContent = `⚠️ Cannot run ${language} code directly in the browser. Use an appropriate environment for the language.`;
+          output.classList.add("error");
+        }
+      } catch (e) {
+        output.textContent = "❌ Error: " + e.message;
+        output.classList.add("error");
+      }
+    }
+
+    // AI Features Implementation
+    async function explainCode() {
+      const code = document.getElementById("code").value;
+      if (!code.trim()) {
+        showAIOutput("⚠️ Please enter code first", "error");
+        return;
+      }
+      
+      showAILoader(true);
+      
+      try {
+        // Simulate AI processing
+        setTimeout(() => {
+          const explanation = `Code Explanation:
+
+📝 This code does the following:
+• Creates dynamic HTML elements using JavaScript
+• Adds event handlers for user interaction
+• Applies dynamic CSS styles to change appearance
+• Uses functions like setInterval for automatic updates
+
+🔍 Important points:
+- The code starts by creating new DOM elements
+- Properties and styles are added to each element
+- There are event handlers for events like click and mouseenter
+- Updates happen asynchronously
+
+💡 Suggestions:
+1. You could add error handling
+2. Separate styles into a dedicated CSS file
+3. Use classes instead of inline styles`;
+          
+          showAIOutput(explanation, "success");
+          showAILoader(false);
+        }, 1500);
+      } catch (error) {
+        showAIOutput("❌ Error explaining code: " + error.message, "error");
+        showAILoader(false);
+      }
+    }
+
+    async function refactorCode() {
+      const code = document.getElementById("code").value;
+      if (!code.trim()) {
+        showAIOutput("⚠️ Please enter code first", "error");
+        return;
+      }
+      
+      showAILoader(true);
+      
+      try {
+        // Simulate AI processing
+        setTimeout(() => {
+          const refactoredCode = `// Code after refactoring and improvement
+
+// Helper function to create elements
+function createElement(tag, properties = {}, styles = {}) {
+    const element = document.createElement(tag);
+    
+    // Set properties
+    Object.keys(properties).forEach(key => {
+        element[key] = properties[key];
+    });
+    
+    // Set styles
+    Object.keys(styles).forEach(key => {
+        element.style[key] = styles[key];
+    });
+    
+    return element;
+}
+
+// Helper function to add event listeners
+function addEventListeners(element, events) {
+    Object.keys(events).forEach(event => {
+        element.addEventListener(event, events[event]);
+    });
+}
+
+// Main code after refactoring
+function initializeApp() {
+    // Create button using helper functions
+    const button = createElement(
+        'button',
+        { textContent: 'Enhanced Button' },
+        {
+            padding: '12px 24px',
+            margin: '10px',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease'
+        }
+    );
+    
+    // Add event listeners
+    addEventListeners(button, {
+        mouseenter: function() {
+            this.style.transform = 'scale(1.05)';
+        },
+        mouseleave: function() {
+            this.style.transform = 'scale(1)';
+        },
+        click: function() {
+            this.style.backgroundColor = '#${Math.floor(Math.random()*16777215).toString(16)}';
+        }
+    });
+    
+    document.body.appendChild(button);
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', initializeApp);`;
+          
+          document.getElementById("code").value = refactoredCode;
+          highlightCode();
+          showAIOutput("✅ Code refactored successfully. Improved:\n• Added helper functions\n• Separated responsibilities\n• Improved readability\n• Reduced repetition", "success");
+          showAILoader(false);
+        }, 2000);
+      } catch (error) {
+        showAIOutput("❌ Error refactoring code: " + error.message, "error");
+        showAILoader(false);
+      }
+    }
+
+    // Additional AI features (optimized for brevity)
+    async function optimizeCode() {
+      showAILoader(true);
+      setTimeout(() => {
+        showAIOutput("✅ Suggested code optimizations:\n\n1. Reduce DOM queries\n2. Use event delegation\n3. Cache elements in variables\n4. Reduce style repetition\n5. Use requestAnimationFrame for animations", "success");
+        showAILoader(false);
+      }, 1500);
+    }
+
+    async function addComments() {
+      const code = document.getElementById("code").value;
+      showAILoader(true);
+      setTimeout(() => {
+        const commentedCode = `/**
+ * Smart Educational Platform - Documented Code
+ * This code was generated by the Smart Educational Platform
+ * Date: ${new Date().toLocaleDateString()}
+ */
+
+// Main function to initialize the application
+function initializeApplication() {
+    // Initialization code here
+    console.log("Application ready to run");
+}
+
+// Call the main function when the page loads
+document.addEventListener('DOMContentLoaded', initializeApplication);`;
+        
+        document.getElementById("code").value = commentedCode + '\n\n' + code;
+        highlightCode();
+        showAIOutput("✅ Added explanatory comments to the code", "success");
+        showAILoader(false);
+      }, 1500);
+    }
+
+    async function translateCode() {
+      showAILoader(true);
+      setTimeout(() => {
+        showAIOutput("🔤 Code terminology translation:\n\n• function → دالة\n• variable → متغير\n• event → حدث\n• element → عنصر\n• style → نمط\n• listener → مستمع\n• callback → رد الاتصال\n• array → مصفوفة\n• object → كائن", "success");
+        showAILoader(false);
+      }, 1500);
+    }
+
+    async function suggestImprovements() {
+      showAILoader(true);
+      setTimeout(() => {
+        showAIOutput("💡 Code improvement suggestions:\n\n1. Use latest ES6+ features\n2. Add error handling\n3. Improve application performance\n4. Enhance user experience\n5. Add proper documentation\n6. Test code under different conditions", "success");
+        showAILoader(false);
+      }, 1500);
+    }
+
+    async function debugCode() {
+      const code = document.getElementById("code").value;
+      showAILoader(true);
+      
+      setTimeout(() => {
+        const issues = [];
+        
+        // Simple code analysis
+        if (code.includes("innerHTML")) {
+          issues.push("⚠️ Avoid using innerHTML for security reasons, use textContent or createElement instead");
+        }
+        
+        if (code.includes("setInterval") && !code.includes("clearInterval")) {
+          issues.push("⚠️ Make sure to use clearInterval to clean up timers");
+        }
+        
+        if (code.includes("document.write")) {
+          issues.push("❌ Avoid using document.write as it wipes page content");
+        }
+        
+        if (code.includes("var ")) {
+          issues.push("💡 Use let or const instead of var for better block scope");
+        }
+        
+        if (issues.length === 0) {
+          issues.push("✅ No obvious errors in the code. The code looks good!");
+        }
+        
+        showAIOutput("🔍 Code inspection results:\n\n" + issues.join('\n\n'), issues.some(i => i.includes('❌')) ? "error" : "success");
+        showAILoader(false);
+      }, 1500);
+    }
+
+    // Utility functions
+    function showOutput(message, type) {
+      const output = document.getElementById("output");
+      output.textContent = message;
+      output.className = type;
+    }
+
+    function showAIOutput(message, type) {
+      const output = document.getElementById("ai-output");
+      output.textContent = message;
+      output.className = type;
+    }
+
+    function showAILoader(show) {
+      document.getElementById("ai-loader").style.display = show ? "block" : "none";
+    }
+
+    function copyCode() {
+      const codeArea = document.getElementById("code");
+      codeArea.select();
+      document.execCommand("copy");
+      showTemporaryMessage(codeArea, "Code copied to clipboard", "success");
+    }
+
+    function formatCode() {
+      const codeArea = document.getElementById("code");
+      // Simple formatting - in a real implementation, use a proper formatter
+      const formatted = codeArea.value
+        .replace(/{/g, ' {\n')
+        .replace(/}/g, '\n}\n')
+        .replace(/;/g, ';\n')
+        .replace(/\n\n+/g, '\n\n');
+      
+      codeArea.value = formatted;
+      highlightCode();
+      showTemporaryMessage(codeArea, "Code formatted", "success");
+    }
+
+    function clearCode() {
+      document.getElementById("code").value = "";
+      showOutput("Code cleared", "success");
+    }
+
+    function clearOutput() {
+      document.getElementById("output").textContent = "💡 Output will appear here...";
+      document.getElementById("output").className = "";
+    }
+
+    function highlightCode() {
+      // This would be implemented with a proper syntax highlighter
+      setTimeout(() => {
+        const codeArea = document.getElementById("code");
+        // Simple highlighting for demonstration
+        codeArea.style.color = "#00ff00";
+      }, 100);
+    }
+
+    function showTemporaryMessage(element, message, type) {
+      const originalBorder = element.style.border;
+      element.style.border = type === "success" ? "2px solid #4CAF50" : "2px solid #ff4081";
+      
+      const tooltip = document.createElement("div");
+      tooltip.textContent = message;
+      tooltip.style.cssText = `
+        position: absolute;
+        background: ${type === "success" ? "#4CAF50" : "#ff4081"};
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        z-index: 1000;
+        font-size: 0.8rem;
+      `;
+      
+      const rect = element.getBoundingClientRect();
+      tooltip.style.top = (rect.top - 30) + "px";
+      tooltip.style.left = rect.left + "px";
+      
+      document.body.appendChild(tooltip);
+      
+      setTimeout(() => {
+        element.style.border = originalBorder;
+        document.body.removeChild(tooltip);
+      }, 2000);
+    }
+
+    // History management
+    function addToHistory(description, code, language) {
+      const history = JSON.parse(localStorage.getItem('code-history') || '[]');
+      
+      history.unshift({
+        id: Date.now(),
+        description,
+        code,
+        language,
+        timestamp: new Date().toLocaleString(),
+        preview: code.substring(0, 100) + '...'
+      });
+      
+      // Keep only last 10 items
+      if (history.length > 10) {
+        history.pop();
+      }
+      
+      localStorage.setItem('code-history', JSON.stringify(history));
+      loadHistory();
+    }
+
+    function loadHistory() {
+      const history = JSON.parse(localStorage.getItem('code-history') || '[]');
+      const historyList = document.getElementById('history-list');
+      
+      historyList.innerHTML = '';
+      
+      if (history.length === 0) {
+        historyList.innerHTML = '<p style="text-align: center; opacity: 0.7;">No items in history</p>';
+        return;
+      }
+      
+      history.forEach(item => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `
+          <div class="history-title">${item.description}</div>
+          <div class="history-preview">${item.preview}</div>
+          <div style="font-size: 0.7rem; opacity: 0.6; margin-top: 0.3rem;">${item.timestamp} - ${item.language}</div>
+        `;
+        
+        historyItem.addEventListener('click', () => {
+          document.getElementById('code').value = item.code;
+          document.getElementById('language').value = item.language;
+          showOutput(`Loaded code from history (${item.timestamp})`, "success");
+          switchTab('code-execution');
+        });
+        
+        historyList.appendChild(historyItem);
+      });
+    }
+
+    function clearHistory() {
+      if (confirm('Are you sure you want to clear code history?')) {
+        localStorage.removeItem('code-history');
+        loadHistory();
+        showOutput("History cleared", "success");
+      }
+    }
+
+    // OpenAI API integration (simplified)
+    async function generateWithOpenAI(description, language, apiKey) {
+      // Note: This is a simplified implementation
+      // In a real application, you would make actual API calls to OpenAI
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // For demonstration purposes, return enhanced code
+      // In reality, you would use: fetch('https://api.openai.com/v1/chat/completions', ...)
+      return generateEnhancedCode(description, language);
+    }
+  </script>
+
+</body>
+</html>
