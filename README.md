@@ -19,7 +19,7 @@ A web-based platform that uses AI to help students learn programming by generati
 ## 🚀 Live Demo
 
 The application is deployed using GitHub Pages and can be accessed at:
-[https://Devothman1.github.io/your-repository-name](https://Devothman1.github.io/your-repository-name)
+[https://Devothman1.github.io/Text-editor](https://Devothman1.github.io/Text-editor)
 
 ## 🛠️ Technologies Used
 
